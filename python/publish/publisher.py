@@ -249,6 +249,7 @@ class Publisher:
                     for pull in pulls:
                         self.publish_comment(self._settings.comment_title, stats, pull, data.check_url, cases)
                 else:
+                    logger.info("Testing")
                     logger.info(f'There is no pull request for commit {self._settings.commit}')
             else:
                 logger.info('Commenting on pull requests disabled')
