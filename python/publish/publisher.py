@@ -289,12 +289,22 @@ class Publisher:
         # get all pull requests associated with this commit
         # TODO: simplify to event pr only, breaking change for version 3.0
         pull_requests = self.get_all_pulls(commit)
+        logger.info(f'found {len(pull_requests)} pull requests in repo {self._settings.repo} containing commit {commit}')
 
-        if logger.isEnabledFor(logging.DEBUG):
-            for pr in pull_requests:
-                logger.debug(pr)
-                logger.debug(pr.raw_data)
-                logger.debug(f'PR {pr.html_url}: {pr.head.repo.full_name} -> {pr.base.repo.full_name}')
+        for pr in pull_requests:
+            logger.info(pr)
+            logger.info(pr.raw_data)
+            logger.info(f'PR {pr.html_url}: {pr.head.repo.full_name} -> {pr.base.repo.full_name}')
+            
+            
+        logger.info("Testing release pull requests")
+        release_commit = "6f406551a83ee54b8ac6e551fc8368097b588a4f"
+        release_pull_request = self.get_all_pulls(release_commit)
+        
+        for pr in release_pull_request:
+            logger.info(pr)
+            logger.info(pr.raw_data)
+            logger.info(f'PR {pr.html_url}: {pr.head.repo.full_name} -> {pr.base.repo.full_name}')
 
         # we can only publish the comment to PRs that are in the same repository as this action is executed in
         # so pr.base.repo.full_name must be same as GITHUB_REPOSITORY / self._settings.repo
